@@ -64,7 +64,9 @@ trait Utf8TokenEncoder {
 case class BytePairUtf8TokenEncoder(tokens: List[Token]) extends Utf8TokenEncoder {
   private val decodeMap = tokens.map(token => token.id -> token).toMap
 
-  override def encodeUtf8(bytes: Array[Byte]): Try[List[Token]] = ???
+  override def encodeUtf8(bytes: Array[Byte]): Try[List[Token]] = Try {
+    ???
+  }
 
   override def decodeUtf8(tokens: List[Int]): Try[Array[Byte]] = Try {
     val result = new ByteArrayOutputStream()
@@ -86,27 +88,33 @@ object TokensMain {
   def main(args: Array[String]): Unit = {
     // reference implementation:
     val referenceRegistry = Encodings.newDefaultEncodingRegistry
-    val referenceEncoder  = referenceRegistry.getEncoding(EncodingType.O200K_BASE)
+    val referenceEncoder  = referenceRegistry.getEncoding(EncodingType.CL100K_BASE)
 
     // current implementation:
     val tokens: List[Token] =
-      TokenParsers.parseTiktoken(() => TokensMain.getClass.getResourceAsStream("o200k_base.tiktoken")).get
+      TokenParsers.parseTiktoken(() => TokensMain.getClass.getResourceAsStream("cl100k_base.tiktoken")).get
     tokens.slice(0, 1000).foreach(token => println(token))
     println("...\n")
 
-
     val trialEncoder = GenericStringTokenEncoder(BytePairUtf8TokenEncoder(tokens))
 
-    val exampleText =
-      "Both methods give you flexibility, and you can choose based on your use case and whether you're working with standard Java libraries or Scala collections."
-    println(s"Example:\n$exampleText\n\n")
+    val exampleTextLong = "The quick brown fox jumps over the lazy dog."
+    println(s"Example:\n$exampleTextLong\n\n")
 
-    val referenceExampleTokens = referenceEncoder.encode(exampleText)
+    val referenceExampleTokens = referenceEncoder.encode(exampleTextLong)
 
     val referenceReconstructedText = referenceEncoder.decode(referenceExampleTokens)
     val trialReconstructedText     = trialEncoder.decode(referenceExampleTokens.toArray.toList).get
 
     println(s"Reference:\n$referenceReconstructedText\n\n")
     println(s"Trial:\n$trialReconstructedText\n\n")
+
+    val exampleTextShort     = "Hello Scala!"
+    val referenceShortTokens = referenceEncoder.encode(exampleTextShort)
+    println(s"Reference: $referenceShortTokens")
+
+    val trialShortTokens = trialEncoder.encode(exampleTextShort)
+    println(s"Trial    : $trialShortTokens")
+
   }
 }
