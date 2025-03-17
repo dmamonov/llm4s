@@ -57,6 +57,7 @@ lazy val samples = (project in file("samples"))
     name := "samples",
     libraryDependencies ++= List(
       "ch.qos.logback" % "logback-classic" % "1.5.17",
+      "com.knuddels"   % "jtokkit"         % "1.1.0", //temporary imported for `tokens` example
       "org.scalatest" %% "scalatest"       % "3.2.19" % Test
     )
   )
