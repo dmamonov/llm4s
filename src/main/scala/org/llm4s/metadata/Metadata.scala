@@ -57,6 +57,7 @@ trait Vocabulary {
   def name: String
   def displayName: String = name
 }
+case class CustomVocabulary(name: String) extends Vocabulary
 
 /*sealed*/
 trait ModelVersion {
