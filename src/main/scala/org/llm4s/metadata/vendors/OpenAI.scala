@@ -36,6 +36,10 @@ case object GPT_4o_2024_08_06 extends ModelVersion {
 
   override def outputs: Set[MediaType] = Set(Text)
 
+  override def features: Option[Set[Feature]] = None
+
+  override def endpoints: Option[Set[Endpoint]] = None
+
   override def contextWindowSize: Option[Int] = Some(128_000)
 
   override def maxOutputTokens: Option[Int] = Some(16_384)
@@ -53,6 +57,8 @@ case object GPT_4_5_Preview_2025_02_27 extends ModelVersion {
   override def model: ModelSeries = GPT_4_5_Preview
 
   override def name: String = "gpt-4.5-preview-2025-02-27"
+
+  override def vocabulary: Option[Vocabulary] = None
 
   override def inputs: Set[MediaType] = Set(Text, Image)
 

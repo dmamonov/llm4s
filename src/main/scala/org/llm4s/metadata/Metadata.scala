@@ -66,19 +66,32 @@ trait ModelVersion {
 
   def displayName: String = name
 
-  def vocabulary: Option[Vocabulary] = None
+  def vocabulary: Option[Vocabulary]
 
   def inputs: Set[MediaType]
 
   def outputs: Set[MediaType]
 
-  def features: Option[Set[Feature]] = None
+  def features: Option[Set[Feature]]
 
-  def endpoints: Option[Set[Endpoint]] = None
+  def endpoints: Option[Set[Endpoint]]
 
-  def contextWindowSize: Option[Int] = None
+  def contextWindowSize: Option[Int]
 
-  def maxOutputTokens: Option[Int] = None
+  def maxOutputTokens: Option[Int]
 
-  def knowledgeCutoff: Option[LocalDate] = None
+  def knowledgeCutoff: Option[LocalDate]
 }
+
+case class CustomModelVersion(
+  model: ModelSeries,
+  name: String,
+  vocabulary: Option[Vocabulary] = None,
+  inputs: Set[MediaType],
+  outputs: Set[MediaType],
+  features: Option[Set[Feature]] = None,
+  endpoints: Option[Set[Endpoint]] = None,
+  contextWindowSize: Option[Int],
+  maxOutputTokens: Option[Int],
+  knowledgeCutoff: Option[LocalDate]
+) extends ModelVersion
